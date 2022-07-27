@@ -1,6 +1,6 @@
 import { Component, createRef } from "react"
 
-class Uncontrolled extends Component {
+class UncontrolledForm extends Component {
     constructor() {
         super()
 
@@ -9,7 +9,27 @@ class Uncontrolled extends Component {
             email: createRef(),
             mobileno: createRef(),
             gender: createRef(),
+            birthdate: createRef(),
+            age: createRef(),
+            age1: createRef(),
+
+            feedback: createRef(),
             photo: createRef(),
+            terms: createRef()
+        }
+
+        this.error = {
+            fullname: createRef(),
+            email: createRef(),
+            mobileno: createRef(),
+            gender: createRef(),
+            birthdate: createRef(),
+            age: createRef(),
+            age1: createRef(),
+
+            feedback: createRef(),
+            photo: createRef(),
+            terms: createRef()
         }
 
         this.submitForm = this.submitForm.bind(this)
@@ -18,6 +38,66 @@ class Uncontrolled extends Component {
 
     validate() {
         let errorCount = 0
+
+        const errorMessages = {
+            EMPTY_FIELD: "Please fill up this input field",
+            INVALID_EMAIL: "Please enter a valid email address",
+            FEEDBACK_ERROR:
+                "Please write your feedback here. This helps us improve our services.",
+            PHOTO_ERROR: "Please upload the photo to complete the feedback process",
+            AGREE_TERMS_ERROR: "By filling this form, you need to agree to the terms."
+        }
+
+        if (this.inputRefs.fullname.current.value.trim() === "") {
+            this.error.fullname.current.innerText = "Please enter your name here"
+            errorCount++
+        }
+
+        if (this.inputRefs.email.current.value.trim() === "") {
+            this.error.email.current.innerText =
+                "Please enter your email address here."
+            errorCount++
+        }
+
+        if (
+            !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+                this.inputRefs.email.current.value.trim()
+            )
+        ) {
+            this.error.email.current.innerText = errorMessages.INVALID_EMAIL
+            errorCount++
+        }
+
+        if (this.inputRefs.mobileno.current.value.trim() === "") {
+            this.error.mobileno.current.innerText = errorMessages.EMPTY_FIELD
+            errorCount++
+        }
+
+        if (this.inputRefs.gender.current.value.trim() === "") {
+            this.error.gender.current.innerText = "Please select your gender."
+            errorCount++
+        }
+
+        if (this.inputRefs.birthdate.current.value.trim() === "") {
+            this.error.birthdate.current.innerText = "Please select your birth date."
+            errorCount++
+        }
+
+        if (this.inputRefs.feedback.current.value.trim() === "") {
+            this.error.feedback.current.innerText = errorMessages.FEEDBACK_ERROR
+            errorCount++
+        }
+
+        if (this.inputRefs.photo.current.value.trim() === "") {
+            this.error.photo.current.innerText = errorMessages.PHOTO_ERROR
+            errorCount++
+        }
+
+        if (!this.inputRefs.terms.current.checked) {
+            this.error.terms.current.innerText = errorMessages.AGREE_TERMS_ERROR
+            errorCount++
+        }
+
         return errorCount
     }
 
@@ -26,15 +106,49 @@ class Uncontrolled extends Component {
 
         if (this.validate() === 0) {
             console.log(`
-         ${this.inputRefs.fullname.current.value}
-         ${this.inputRefs.email.current.value}
-         ${this.inputRefs.mobileno.current.value}
-         ${this.inputRefs.gender.current.value}
-         ${this.inputRefs.photo.current.value}
+
+
+      ${this.inputRefs.fullname.current.value}
+      ${this.inputRefs.email.current.value}
+      ${this.inputRefs.mobileno.current.value}
+      ${this.inputRefs.gender.current.value}
+      ${this.inputRefs.birthdate.current.value}
+      ${this.inputRefs.age.current.value}
+      ${this.inputRefs.age1.current.value}
+      ${this.inputRefs.photo.current.value}
+      ${this.inputRefs.feedback.current.value}
       `)
-            // alert("Feedback submitted sucessfully.")
+
+            alert("Feedback submitted sucessfully.")
+
+            this.resetForm()
         }
     }
+
+    resetForm() {
+        this.inputRefs.fullname.current.value = ""
+        this.inputRefs.email.current.value = ""
+        this.inputRefs.mobileno.current.value = ""
+        this.inputRefs.gender.current.value = ""
+        this.inputRefs.birthdate.current.value = ""
+        this.inputRefs.age.current.value = ""
+        this.inputRefs.age1.current.value = ""
+        this.inputRefs.feedback.current.value = ""
+        this.inputRefs.photo.current.value = ""
+        this.inputRefs.terms.current.checked = false
+
+        this.error.fullname.current.innerText = ""
+        this.error.email.current.innerText = ""
+        this.error.mobileno.current.innerText = ""
+        this.error.gender.current.innerText = ""
+        this.error.birthdate.current.innerText = ""
+        this.error.age.current.select = ""
+        this.error.age1.current.select = ""
+        this.error.feedback.current.innerText = ""
+        this.error.photo.current.innerText = ""
+        this.error.terms.current.innerText = ""
+    }
+
     render() {
         return (
             <form onSubmit={this.submitForm}>
@@ -45,14 +159,11 @@ class Uncontrolled extends Component {
                     <input
                         type="text"
                         name="fullname"
-                        placeholder="Enter Your Name"
                         id="fullname"
                         ref={this.inputRefs.fullname}
-                        // pattern="[A-Za-z]"
-                        // maxLength="10"
-                        required
                     />
                     <br />
+                    <span className="error" ref={this.error.fullname}></span>
                     <br />
                 </div>
                 <div>
@@ -62,14 +173,10 @@ class Uncontrolled extends Component {
                         type="text"
                         name="email"
                         id="email"
-                        // pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
-                        pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
-                        // pattern=".+@globex\.com"
-                        placeholder="Enter Your Email"
                         ref={this.inputRefs.email}
-                        required
                     />
                     <br />
+                    <span className="error" ref={this.error.email}></span>
                     <br />
                 </div>
                 <div>
@@ -79,27 +186,62 @@ class Uncontrolled extends Component {
                         type="tel"
                         name="mobileno"
                         id="mobileno"
-                        placeholder="Enter Your Number"
                         ref={this.inputRefs.mobileno}
-                        pattern="[7-9]{1}[0-9]{9}"
-                        required
                     />
                     <br />
+                    <span className="error" ref={this.error.mobileno}></span>
                     <br />
                 </div>
                 <div>
                     <label htmlFor="gender">Gender:</label>
                     <br />
-                    <select name="gender" id="gender" ref={this.inputRefs.gender} required>
+                    <select name="gender" id="gender" ref={this.inputRefs.gender}>
                         <option value="">Select gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
-
-
+                    <br />
+                    <span className="error" ref={this.error.gender}></span>
+                    <br />
+                </div>
+                <div>
+                    <label htmlFor="birthdate">Birth date:</label>
+                    <br />
+                    <input
+                        type="date"
+                        name="birthdate"
+                        id="birthdate"
+                        ref={this.inputRefs.birthdate}
+                    />
+                    <br />
+                    <span className="error" ref={this.error.birthdate}></span>
+                    <br />
                 </div>
 
 
+                <p>Please select your age:</p>
+                <input type="radio" id="age1" name="age" value="0-30" ref={this.inputRefs.age} />
+                <label for="age1">0 - 30</label><br />
+                <input type="radio" id="age2" name="age" value="31-60" ref={this.inputRefs.age1} />
+                <label for="age2">31 - 60</label><br />
+
+
+                <br />
+
+                <div>
+                    <label htmlFor="feedback">Message:</label>
+                    <br />
+                    <textarea
+                        name="feedback"
+                        id="feedback"
+                        cols="30"
+                        rows="4"
+                        ref={this.inputRefs.feedback}
+                    ></textarea>
+                    <br />
+                    <span className="error" ref={this.error.feedback}></span>
+                    <br />
+                </div>
                 <div>
                     <label htmlFor="photo"></label>
                     <br />
@@ -108,12 +250,24 @@ class Uncontrolled extends Component {
                         name="photo"
                         id="photo"
                         ref={this.inputRefs.photo}
-                        required
                     />
                     <br />
+                    <span className="error" ref={this.error.photo}></span>
                     <br />
                 </div>
-
+                <div>
+                    <input
+                        type="checkbox"
+                        name="terms"
+                        id="terms"
+                        ref={this.inputRefs.terms}
+                    />
+                    <label htmlFor="terms">
+                        I agree
+                    </label>
+                    <br />
+                    <span className="error" ref={this.error.terms}></span>
+                </div>
                 <div>
                     <br />
                     <button>Submit</button>
@@ -123,4 +277,4 @@ class Uncontrolled extends Component {
     }
 }
 
-export default Uncontrolled
+export default UncontrolledForm
