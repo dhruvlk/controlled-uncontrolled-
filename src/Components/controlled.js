@@ -1,5 +1,5 @@
 import { Component } from "react"
-// import "./style.css";
+import "./style.css"
 
 class ControlledForm extends Component {
     constructor() {
@@ -10,7 +10,7 @@ class ControlledForm extends Component {
             mobileno: "",
             gender: "",
             birthdate: "",
-            age: "",
+            age: "31-60",
             feedback: "",
             photo: "",
             termsConfirm: false,
@@ -39,9 +39,10 @@ class ControlledForm extends Component {
             EMPTY_FIELD: "Please fill up this input field",
             INVALID_EMAIL: "Please enter a valid email address",
             FEEDBACK_ERROR:
-                "Please write your feedback here. This helps us improve our services.",
-            PHOTO_ERROR: "Please upload the photo to complete the feedback process",
-            AGREE_TERMS_ERROR: "By filling this form, you need to agree to the terms."
+                "Please write your Message here. This helps us improve our services.",
+            PHOTO_ERROR: "Please upload the photo",
+            AGREE_TERMS_ERROR: "By filling this form, you need to agree to the terms.",
+
         }
 
         for (let i = 0, e = Object.entries(this.state);i < e.length;i++) {
@@ -86,11 +87,8 @@ class ControlledForm extends Component {
    ${this.state.gender}
    ${this.state.birthdate}
    ${this.state.age}
-
    ${this.state.photo}
-
-
-    ${this.state.feedback}
+   ${this.state.feedback}
 
 
     `)
@@ -125,11 +123,12 @@ class ControlledForm extends Component {
                         name="fullname"
                         value={this.state.fullname}
                         onChange={this.setInputValue}
+
                     />
                     {this.state.errors.fullname && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.fullname}</span>
+                            <span className="error-text">{this.state.errors.fullname}</span>
                         </>
                     )}
                     <br />
@@ -144,11 +143,13 @@ class ControlledForm extends Component {
                         value={this.state.email}
                         onChange={this.setInputValue}
                         noValidate
+                        pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
+
                     />
                     {this.state.errors.email && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.email}</span>
+                            <span className="error-text">{this.state.errors.email}</span>
                         </>
                     )}
                     <br />
@@ -163,11 +164,13 @@ class ControlledForm extends Component {
                         value={this.state.mobileno}
                         onChange={this.setInputValue}
                         noValidate
+                        pattern="[7-9]{1}[0-9]{9}"
+
                     />
                     {this.state.errors.mobileno && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.mobileno}</span>
+                            <span className="error-text">{this.state.errors.mobileno}</span>
                         </>
                     )}
                     <br />
@@ -180,6 +183,7 @@ class ControlledForm extends Component {
                         id="gender"
                         value={this.state.gender}
                         onChange={this.setInputValue}
+
                     >
                         <option value="">Select gender</option>
                         <option value="male">Male</option>
@@ -188,7 +192,7 @@ class ControlledForm extends Component {
                     {this.state.errors.gender && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.gender}</span>
+                            <span className="error-text">{this.state.errors.gender}</span>
                         </>
                     )}
                     <br />
@@ -201,22 +205,30 @@ class ControlledForm extends Component {
                         name="birthdate"
                         id="birthdate"
                         onChange={this.setInputValue}
+
                     />
                     {this.state.errors.birthdate && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.birthdate}</span>
+                            <span className="error-text">{this.state.errors.birthdate}</span>
                         </>
                     )}
                     <br />
                 </label>
-                <div onChange={this.setInputValue}>
+                <div  >
                     <p>Please select your age:</p>
-                    <input type="radio" id="age1" name="age" value="0-30" />
+                    <input type="radio" id="age1" name="age" value="0-30" checked={this.state.age === '0-30'} onChange={this.setInputValue} />
                     <label for="age1">0 - 30</label><br />
-                    <input type="radio" id="age2" name="age" value="31-60" />
+                    <input type="radio" id="age2" name="age" value="31-60" checked={this.state.age === '31-60'} onChange={this.setInputValue} />
                     <label for="age2">31 - 60</label><br />
                 </div>
+                {this.state.errors.birthdate && (
+                    <>
+                        <br />
+                        <span className="error-text">{this.state.errors.birthdate}</span>
+                    </>
+                )}
+                <br />
                 <br />
                 <label htmlFor="feedback">
                     Message:
@@ -233,7 +245,7 @@ class ControlledForm extends Component {
                     {this.state.errors.feedback && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.feedback}</span>
+                            <span className="error-text">{this.state.errors.feedback}</span>
                         </>
                     )}
                     <br />
@@ -246,11 +258,12 @@ class ControlledForm extends Component {
                         name="photo"
                         id="photo"
                         onChange={this.setInputValue}
+
                     />
                     {this.state.errors.photo && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.photo}</span>
+                            <span className="error-text">{this.state.errors.photo}</span>
                         </>
                     )}
                     <br />
@@ -262,18 +275,21 @@ class ControlledForm extends Component {
                         checked={this.state.termsConfirm}
                         name="termsConfirm"
                         onChange={this.setInputValue}
+
                     />
                     I agree
                     {this.state.errors.termsConfirm && (
                         <>
                             <br />
-                            <span className="error">{this.state.errors.termsConfirm}</span>
+                            <span className="error-text">{this.state.errors.termsConfirm}</span>
                         </>
                     )}
                     <br />
                     <br />
                 </label>
-                <button>Submit</button>
+
+                <button className='button'>Submit</button>
+
             </form>
         )
     }
